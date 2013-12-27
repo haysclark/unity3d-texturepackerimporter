@@ -37,7 +37,6 @@ public static class TexturePackerImport{
 		texImp.spriteImportMode =SpriteImportMode.Multiple;
 
 		AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate );
-	
 	}
 
 	[MenuItem("Assets/TexturePacker/Process to Meshes")]
@@ -108,8 +107,7 @@ public static class TexturePackerImport{
 	[MenuItem("Assets/TexturePacker/Process to Prefabs")]
 	static void ProcessToPrefabs(){
 		Mesh[] meshes = ProcessToMeshes();
-		
-		
+
 		TextAsset txt = (TextAsset)Selection.activeObject;
 		string rootPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(txt));
 		
@@ -180,12 +178,8 @@ public static class TexturePackerImport{
 		}
 		
 		return false;
-
 	}
-	
 
-	
-	
 	//Attach 90 degree "Shadow" meshes
 	[MenuItem("Assets/TexturePacker/Attach Shadow Mesh")]
 	static void AttachShadowMesh(){
@@ -232,8 +226,7 @@ public static class TexturePackerImport{
 			EditorUtility.SetDirty(m);
 		}
 	}
-	
-	
+
 	//Validators
 	[MenuItem("Assets/TexturePacker/Attach Shadow Mesh", true)]
 	static bool ValidateAttachShadowMesh(){

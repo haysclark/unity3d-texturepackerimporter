@@ -82,8 +82,7 @@ public class TexturePacker{
 			Vector3[] verts = new Vector3[4];
 			Vector2[] uvs = new Vector2[4];
 			Color32[] colors = new Color32[4];
-		
-			
+
 			if(!rotated){
 				verts[0] = new Vector3(frame.x,frame.y,0);
 				verts[1] = new Vector3(frame.x,frame.y+frame.height,0);
@@ -96,10 +95,7 @@ public class TexturePacker{
 				verts[2] = new Vector3(frame.x+frame.height,frame.y+frame.width,0);
 				verts[3] = new Vector3(frame.x+frame.height,frame.y,0);
 			}
-			
-			
 
-			
 			uvs[0] = verts[0].TPVector3toVector2();
 			uvs[1] = verts[1].TPVector3toVector2();
 			uvs[2] = verts[2].TPVector3toVector2();
@@ -117,8 +113,7 @@ public class TexturePacker{
 				verts[1] = new Vector3(frame.x+frame.width,frame.y+frame.height,0);
 				verts[2] = new Vector3(frame.x+frame.width,frame.y,0);
 			}
-			
-			
+
 			//v-flip
 			for(int i = 0; i < verts.Length; i++){
 				verts[i].y = atlasSize.y - verts[i].y;
@@ -145,8 +140,7 @@ public class TexturePacker{
 			for(int i = 0; i < colors.Length; i++){
 				colors[i] = defaultColor;
 			}
-			
-			
+
 			m.vertices = verts;
 			m.uv = uvs;
 			m.colors32 = colors;
@@ -171,22 +165,19 @@ public class TexturePacker{
 				rect = new Rect(frame.x,frame.y,frame.height,frame.width);
 			}
 
-
 			/* Look if frame is outside from texture */ 
-
 			if( (frame.x + frame.width) > atlasSize.x || (frame.y + frame.height) > atlasSize.y ||
 			    (frame.x < 0 || frame.y < 0)) 
 			{
 				Debug.Log(this.name + " is outside from texture! Sprite is ignored!");
 				smd.name = "IGNORE_SPRITE";
 				return smd;
-
 			}
+
 			//calculate Height 
 		 	/* Example: Texture: 1000 Width x 500 height 
 		 	 * Sprite.Recht(0,0,100,100) --> Sprite is on the bottom left
 			 */
-
 			rect.y = atlasSize.y - frame.y - rect.height;
 
 			smd.rect = rect;
@@ -216,25 +207,39 @@ public class TexturePacker{
 
 	public static List<SpriteMetaData> ProcessToSprites(string text) {
 		Hashtable table = text.hashtableFromJson();
-		
 		MetaData meta = new MetaData((Hashtable)table["meta"]);
-		
-		List<PackedFrame> frames = new List<PackedFrame>();
 		Hashtable frameTable = (Hashtable)table["frames"];
-		
-		foreach(DictionaryEntry entry in frameTable){
+
+		List<PackedFrame> frames = new List<PackedFrame>();
+		foreach(DictionaryEntry entry in frameTable) {
 			frames.Add(new PackedFrame((string)entry.Key, meta.size, (Hashtable)entry.Value));
 		}
+		alphabatizeFramesByName( frames );
 
 		List<SpriteMetaData> sprites = new List<SpriteMetaData>();
 		for(int i = 0; i < frames.Count; i++){
 			SpriteMetaData smd = frames[i].BuildBasicSprite( 0.01f, new Color32(128,128,128,128));
-			if(!smd.name.Equals("IGNORE_SPRITE"))
-				sprites.Add(smd);
+			if(smd.name.Equals("IGNORE_SPRITE")) {
+				continue;
+			}
+			sprites.Add(smd);
 		}
-
 		return sprites;
+	}
 
+	static void alphabatizeFramesByName(List<PackedFrame> frames)
+	{
+		frames.Sort(delegate(PackedFrame a, PackedFrame b) {
+			if (a.name == null && b.name == null) {
+				return 0;
+			}else if (a.name == null) {
+				return -1;
+			}else if (b.name == null) {
+				return 1;
+			}else {
+				return a.name.CompareTo(b.name);
+			}
+		});
 	}
 	
 	public static Mesh[] ProcessToMeshes(string text){
