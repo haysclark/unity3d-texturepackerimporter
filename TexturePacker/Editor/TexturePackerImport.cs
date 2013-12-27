@@ -1,5 +1,6 @@
 /*
 Copyright (c) 2013 Mitch Thompson
+Extended by Harald Lurger (2013) (Process to Sprites)
 
 Standard MIT License
 
@@ -19,6 +20,27 @@ using System.IO;
 
 
 public static class TexturePackerImport{
+
+	[MenuItem("Assets/TexturePacker/Process to Sprites")]
+	static void ProcessToSprite(){
+		TextAsset txt = (TextAsset)Selection.activeObject;
+
+		string rootPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(txt));
+		TexturePacker.MetaData meta = TexturePacker.GetMetaData(txt.text);
+		string texturePath = rootPath + "/" + meta.image;
+		
+		List<SpriteMetaData> sprites = TexturePacker.ProcessToSprites(txt.text);
+
+		string path = rootPath + "/" + meta.image;
+		TextureImporter texImp = AssetImporter.GetAtPath(path) as TextureImporter;
+		texImp.spritesheet = sprites.ToArray();
+		texImp.textureType = TextureImporterType.Sprite;
+		texImp.spriteImportMode =SpriteImportMode.Multiple;
+
+		AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate );
+	
+	}
+
 	[MenuItem("Assets/TexturePacker/Process to Meshes")]
 	static Mesh[] ProcessToMeshes(){
 		TextAsset txt = (TextAsset)Selection.activeObject;
@@ -150,6 +172,7 @@ public static class TexturePackerImport{
 	//Validators
 	[MenuItem("Assets/TexturePacker/Process to Prefabs", true)]
 	[MenuItem("Assets/TexturePacker/Process to Meshes", true)]
+	[MenuItem("Assets/TexturePacker/Process to Sprites", true)]
 	static bool ValidateProcessTexturePacker(){
 		Object o = Selection.activeObject;
 		

@@ -1,5 +1,6 @@
 /*
 Copyright (c) 2013 Mitch Thompson
+Extended by Harald Lurger (2013) (Process to Sprites)
 
 Standard MIT License
 
@@ -11,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -50,6 +52,7 @@ public static class TexturePackerExtensions{
 }
 
 public class TexturePacker{
+
 	public class PackedFrame{
 		public string name;
 		public Rect frame;
@@ -155,6 +158,44 @@ public class TexturePacker{
 			
 			return m;
 		}
+
+		public SpriteMetaData BuildBasicSprite(float scale, Color32 defaultColor){
+			SpriteMetaData smd = new SpriteMetaData();
+			Rect rect;
+
+			if(!rotated){
+				rect = this.frame;
+			}
+			else
+			{
+				rect = new Rect(frame.x,frame.y,frame.height,frame.width);
+			}
+
+
+			/* Look if frame is outside from texture */ 
+
+			if( (frame.x + frame.width) > atlasSize.x || (frame.y + frame.height) > atlasSize.y ||
+			    (frame.x < 0 || frame.y < 0)) 
+			{
+				Debug.Log(this.name + " is outside from texture! Sprite is ignored!");
+				smd.name = "IGNORE_SPRITE";
+				return smd;
+
+			}
+			//calculate Height 
+		 	/* Example: Texture: 1000 Width x 500 height 
+		 	 * Sprite.Recht(0,0,100,100) --> Sprite is on the bottom left
+			 */
+
+			rect.y = atlasSize.y - frame.y - rect.height;
+
+			smd.rect = rect;
+			smd.alignment =  1;
+			smd.name = name;
+			smd.pivot = this.frame.center;
+
+			return smd;
+		}
 	}
 	
 	public class MetaData{
@@ -172,7 +213,29 @@ public class TexturePacker{
 			smartUpdate = (string)table["smartUpdate"];
 		}
 	}
-	
+
+	public static List<SpriteMetaData> ProcessToSprites(string text) {
+		Hashtable table = text.hashtableFromJson();
+		
+		MetaData meta = new MetaData((Hashtable)table["meta"]);
+		
+		List<PackedFrame> frames = new List<PackedFrame>();
+		Hashtable frameTable = (Hashtable)table["frames"];
+		
+		foreach(DictionaryEntry entry in frameTable){
+			frames.Add(new PackedFrame((string)entry.Key, meta.size, (Hashtable)entry.Value));
+		}
+
+		List<SpriteMetaData> sprites = new List<SpriteMetaData>();
+		for(int i = 0; i < frames.Count; i++){
+			SpriteMetaData smd = frames[i].BuildBasicSprite( 0.01f, new Color32(128,128,128,128));
+			if(!smd.name.Equals("IGNORE_SPRITE"))
+				sprites.Add(smd);
+		}
+
+		return sprites;
+
+	}
 	
 	public static Mesh[] ProcessToMeshes(string text){
 		return ProcessToMeshes(text, Quaternion.identity);
