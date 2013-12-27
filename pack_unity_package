@@ -52,6 +52,18 @@ PRINT_HELP(){
 	echo "(-h)           	   show this help"
 }
 
+COPY_README(){
+	if [ -d "Assets/" ]; then
+		cp LICENSE Assets/LICENSE.txt
+	fi
+}
+
+COPY_LICENSE(){
+	if [ -d "Assets/" ]; then
+		cp README.md Assets/README.txt
+	fi
+}
+
 CLEAN_UP(){
 	if [ -d "Assets/" ]; then
 		rm -r Assets/
@@ -116,6 +128,8 @@ fi
 EXPORT_PATH="Assets/${FOLDER_PATH}"
 
 CMD+="${UNITY_PATH} -quit -batchmode -createProject .;"
+COPY_README
+COPY_LICENSE
 CMD+="cp -r ${FOLDER_PATH} $EXPORT_PATH;"
 CMD+="${UNITY_PATH} -quit -batchmode -exportPackage ${EXPORT_PATH} ${OUTPUT_PATH};"
 

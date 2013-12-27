@@ -1,4 +1,4 @@
-unity3d-texturepackerimporter
+unity3d-texturepackerimporter [![Build Status](https://travis-ci.org/haysclark/unity3d-texturepackerimporter.png)](https://travis-ci.org/haysclark/unity3d-texturepackerimporter)
 =============================
 
 Unity3D - Texture Packer Importer
@@ -7,6 +7,7 @@ http://www.texturepacker.com/
 ## Authors
 * Mitch Thompson
 * Harald Lurger
+* Hays Clark
 
 ## Video Tutorial
 There is a tutorial for this plugin here:
@@ -19,7 +20,7 @@ How to import texture sheets from Texture Packer
 	Data Format:  Unity3D (or JSON Hashtable, then change extension from .json to .txt so Unity picks it up as a text asset)
 	Allow rotation is OK
 	Everything else at your discretion
-	I suggest keeping the output texture's size as Power of 2.
+	Power of 2 output textures are suggested.
 	
 ## Unity process:
 	Create a folder in your Assets/ directory for your imported sprites.

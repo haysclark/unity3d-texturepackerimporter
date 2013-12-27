@@ -33,7 +33,7 @@ testHFlagShouldOutputHelp()
 testScriptShouldOutputExpectedVersion()
 {
 	EXPECTED="pack_unity_package version 1.0"
-	./pack_unity_package -v -d > ./results.txt
+	./pack_unity_package -d -v > ./results.txt
 	firstline=`head -1 ./results.txt`
 	assertEquals "${EXPECTED}" "${firstline}"
 }
@@ -41,7 +41,7 @@ testScriptShouldOutputExpectedVersion()
 testScriptShouldWarnIfUnityIsMissing()
 {
 	EXPECTED="Unity path is incorrect or missing."
-	./pack_unity_package -u "/fake" > ./results.txt
+	./pack_unity_package -d -u "/fake" > ./results.txt
 	firstline=`head -1 ./results.txt`
 	assertEquals "${EXPECTED}" "${firstline}"
 }
