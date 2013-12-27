@@ -98,6 +98,10 @@ while getopts "dvf:o:u:h" VALUE "${@}" ; do
 	fi
 	if [ "${VALUE}" = "u" ] ; then
 		UNITY_PATH="${OPTARG}"
+		if ! [ -f "${UNITY_PATH}" ]; then
+			echo "Unity path is incorrect or missing."
+			exit 1
+		fi
 	fi
 	if [ "${VALUE}" = ":" ] ; then
         echo "Flag -${OPTARG} requires an argument."
@@ -110,11 +114,6 @@ while getopts "dvf:o:u:h" VALUE "${@}" ; do
 		exit 1
 	fi
 done
-
-if ! [ -f "${UNITY_PATH}" ]; then
-	echo "Unity path is incorrect or missing."
-	exit 1
-fi
 
 if ! [ -d "${FOLDER_PATH}" ]; then
 	echo "Folder path is incorrect or missing."
