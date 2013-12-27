@@ -23,10 +23,6 @@ using System.Collections.Generic;
 
 public class MeshTweaker{
 	
-	
-	
-	
-	
 	[MenuItem("Assets/MeshTweaker/Rotate/X45")]
 	static void RotateX45(){BatchRotate(45,0,0);}
 	[MenuItem("Assets/MeshTweaker/Rotate/X90")]
@@ -50,7 +46,6 @@ public class MeshTweaker{
 			}
 		}	
 	}
-	
 	
 	static void RotateMesh(Mesh mesh, Quaternion quat){
 		Vector3[] verts = mesh.vertices;

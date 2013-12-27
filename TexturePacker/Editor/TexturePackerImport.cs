@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-
 public static class TexturePackerImport{
 
 	[MenuItem("Assets/TexturePacker/Process to Sprites")]
@@ -68,7 +67,6 @@ public static class TexturePackerImport{
 			rotation = Quaternion.LookRotation(Vector3.right);
 			break;
 		}
-		
 		
 		Mesh[] meshes = TexturePacker.ProcessToMeshes(txt.text, rotation);
 		
@@ -120,7 +118,6 @@ public static class TexturePackerImport{
 		
 		prefabPath = "Assets/" + prefabPath;
 		
-		
 		//make material
 		TexturePacker.MetaData meta = TexturePacker.GetMetaData(txt.text);
 		
@@ -136,7 +133,6 @@ public static class TexturePackerImport{
 			mat.mainTexture = tex;
 			AssetDatabase.CreateAsset(mat, matPath);
 		}
-		
 		
 		AssetDatabase.Refresh();
 		
