@@ -1,0 +1,5 @@
+language: c
+install:
+  - sudo apt-get install shunit2
+
+script: ./test/runner
