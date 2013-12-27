@@ -1,0 +1,2 @@
+Unknown flag - detected.
+Usage: ./pack_unity_package [-h] [-v] [-u unityPath] [-f folderPath] [-o outputFile]

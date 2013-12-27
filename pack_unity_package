@@ -1,0 +1,129 @@
+#!/bin/bash
+#
+# Export Unity3d-TexturePacker to Unity Bundle
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy of 
+# this software and associated documentation files (the "Software"), to deal in 
+# the Software without restriction, including without limitation the rights to 
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies 
+# of the Software, and to permit persons to whom the Software is furnished to do 
+# so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all 
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+# SOFTWARE.
+# 
+# Latest version can be found at https://github.com/haysclark/unity3d-texturepackerimporter
+# Tested on OSX (10.9)
+# 
+# Copyright (c) 2013 Hays Clark
+#
+
+UNITY_PATH="/Applications/Unity/Unity.app/Contents/MacOS/Unity"
+FOLDER_PATH="TexturePacker"
+OUTPUT_PATH="TexturePackerImporter.unitypackage"
+
+# vars
+NAME=`basename "$0"`
+VERSION=1.0
+DRY_RUN=0
+EXPECTED_FLAGS="[-h] [-v] [-u unityPath] [-f folderPath] [-o outputFile]"
+CMD=""
+
+PRINT_VERSION(){
+	echo ${NAME} version ${VERSION}
+}
+
+PRINT_HELP(){
+	echo usage: ${NAME} ${EXPECTED_FLAGS}
+	echo
+	echo "Options"
+	echo " -v            	   show version"
+	echo " -f            	   set folder to bundle"
+	echo " -o            	   set filename to output"
+	echo " -u            	   set unity command path"
+	echo "(-h)           	   show this help"
+}
+
+CLEAN_UP(){
+	if [ -d "Assets/" ]; then
+		rm -r Assets/
+	fi
+	if [ -d "ProjectSettings/" ]; then
+		rm -r ProjectSettings/
+	fi
+	if [ -d "Library/" ]; then
+		rm -r Library/
+	fi
+	if [ -d "Temp/" ]; then
+		rm -r Temp/
+	fi
+}
+
+while getopts "dvf:o:u:h" VALUE "${@}" ; do
+	if [ "${VALUE}" = "h" ] ; then
+		PRINT_HELP
+		exit 0
+	fi
+	if [ "${VALUE}" = "v" ] ; then
+		PRINT_VERSION
+	fi
+	if [ "${VALUE}" = "d" ] ; then
+		DRY_RUN=1
+	fi
+	if [ "${VALUE}" = "f" ] ; then
+		FOLDER_PATH="${OPTARG}"
+	fi
+	if [ "${VALUE}" = "o" ] ; then
+		OUTPUT_PATH="${OPTARG}"
+	fi
+	if [ "${VALUE}" = "u" ] ; then
+		UNITY_PATH="${OPTARG}"
+	fi
+	if [ "${VALUE}" = ":" ] ; then
+        echo "Flag -${OPTARG} requires an argument."
+        echo "Usage: $0 ${EXPECTED_FLAGS}"
+        exit 1
+    fi
+	if [ "${VALUE}" = "?" ] ; then
+		echo "Unknown flag -${OPTARG} detected."
+		echo "Usage: $0 ${EXPECTED_FLAGS}"
+		exit 1
+	fi
+done
+
+if ! [ -f "${UNITY_PATH}" ]; then
+	echo "Unity path is incorrect or missing."
+	exit 1
+fi
+
+if ! [ -d "${FOLDER_PATH}" ]; then
+	echo "Folder path is incorrect or missing."
+	exit 1
+fi
+
+if [ -f "${OUTPUT_PATH}" ]; then
+	rm ${OUTPUT_PATH};
+fi
+
+EXPORT_PATH="Assets/${FOLDER_PATH}"
+
+CMD+="${UNITY_PATH} -quit -batchmode -createProject .;"
+CMD+="cp -r ${FOLDER_PATH} $EXPORT_PATH;"
+CMD+="${UNITY_PATH} -quit -batchmode -exportPackage ${EXPORT_PATH} ${OUTPUT_PATH};"
+
+if [ "${DRY_RUN}" = 1 ] ; then
+	echo "${CMD}"
+	exit 0
+fi
+
+eval "${CMD}"
+CLEAN_UP
+exit 0

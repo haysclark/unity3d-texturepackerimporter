@@ -1,0 +1,8 @@
+usage: pack_unity_package [-h] [-v] [-u unityPath] [-f folderPath] [-o outputFile]
+
+Options
+ -v            	   show version
+ -f            	   set folder to bundle
+ -o            	   set filename to output
+ -u            	   set unity command path
+(-h)           	   show this help
