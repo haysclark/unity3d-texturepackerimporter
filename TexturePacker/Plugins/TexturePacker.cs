@@ -181,9 +181,9 @@ public class TexturePacker{
 			rect.y = atlasSize.y - frame.y - rect.height;
 
 			smd.rect = rect;
-			smd.alignment =  1;
+			smd.alignment = (int)SpriteAlignment.Center;
 			smd.name = name;
-			smd.pivot = this.frame.center;
+			smd.pivot = new Vector2(frame.width/2, frame.height/2);
 
 			return smd;
 		}

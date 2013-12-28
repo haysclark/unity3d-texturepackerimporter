@@ -34,7 +34,7 @@ public static class TexturePackerImport{
 		TextureImporter texImp = AssetImporter.GetAtPath(path) as TextureImporter;
 		texImp.spritesheet = sprites.ToArray();
 		texImp.textureType = TextureImporterType.Sprite;
-		texImp.spriteImportMode =SpriteImportMode.Multiple;
+		texImp.spriteImportMode = SpriteImportMode.Multiple;
 
 		AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate );
 	}
@@ -239,9 +239,7 @@ public static class TexturePackerImport{
 		
 		return true;
 	}
-	
-	
-	
+
 	//Options
 	[MenuItem("Assets/TexturePacker/Facing/Back")]
 	static void SetFacingBack(){	EditorPrefs.SetString("TexturePackerImporterFacing", "back"); }
