@@ -26,8 +26,7 @@ public static class TexturePackerImport{
 
 		string rootPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(txt));
 		TexturePacker.MetaData meta = TexturePacker.GetMetaData(txt.text);
-		string texturePath = rootPath + "/" + meta.image;
-		
+
 		List<SpriteMetaData> sprites = TexturePacker.ProcessToSprites(txt.text);
 
 		string path = rootPath + "/" + meta.image;
