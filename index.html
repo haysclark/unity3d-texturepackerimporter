@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Unity3d-texturepackerimporter : Unity3D - Texture Packer Importer" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Unity3d-texturepackerimporter</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/haysclark/unity3d-texturepackerimporter">View on GitHub</a>
+
+          <h1 id="project_title">Unity3d-texturepackerimporter</h1>
+          <h2 id="project_tagline">Unity3D - Texture Packer Importer</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/haysclark/unity3d-texturepackerimporter/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/haysclark/unity3d-texturepackerimporter/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="unity3d-texturepackerimporter-" class="anchor" href="#unity3d-texturepackerimporter-"><span class="octicon octicon-link"></span></a>unity3d-texturepackerimporter <a href="https://travis-ci.org/haysclark/unity3d-texturepackerimporter"><img src="https://travis-ci.org/haysclark/unity3d-texturepackerimporter.png" alt="Build Status"></a>
+</h1>
+
+<p>Unity3D - Texture Packer Importer
+<a href="http://www.texturepacker.com/">http://www.texturepacker.com/</a></p>
+
+<h2>
+<a name="authors" class="anchor" href="#authors"><span class="octicon octicon-link"></span></a>Authors</h2>
+
+<ul>
+<li>Mitch Thompson</li>
+<li>Harald Lurger</li>
+<li>Hays Clark</li>
+</ul><h2>
+<a name="video-tutorial" class="anchor" href="#video-tutorial"><span class="octicon octicon-link"></span></a>Video Tutorial</h2>
+
+<p>There is a tutorial for this plugin here:
+<a href="http://www.youtube.com/watch?v=CHQmvC1pqaY">http://www.youtube.com/watch?v=CHQmvC1pqaY</a></p>
+
+<h2>
+<a name="instructions" class="anchor" href="#instructions"><span class="octicon octicon-link"></span></a>Instructions</h2>
+
+<p>How to import texture sheets from Texture Packer</p>
+
+<h2>
+<a name="texturepacker-settings" class="anchor" href="#texturepacker-settings"><span class="octicon octicon-link"></span></a>TexturePacker settings:</h2>
+
+<pre><code>Data Format:  Unity3D (or JSON Hashtable, then change extension from .json to .txt so Unity picks it up as a text asset)
+Allow rotation is OK
+Everything else at your discretion
+Power of 2 output textures are suggested.
+</code></pre>
+
+<h2>
+<a name="unity-process" class="anchor" href="#unity-process"><span class="octicon octicon-link"></span></a>Unity process:</h2>
+
+<pre><code>Create a folder in your Assets/ directory for your imported sprites.
+Copy the TXT and Image file (PNG, TGA, etc) into that folder.
+Your paths should look something like:
+    Assets/MySprite/MySprite.txt
+    Assets/MySprite/MySprite.png
+</code></pre>
+
+<h2>
+<a name="shaders" class="anchor" href="#shaders"><span class="octicon octicon-link"></span></a>Shaders:</h2>
+
+<pre><code>Transparent Unlit - 
+    The default shader for all imported sprite sheets.
+Opaque Unlit - 
+    nontransparent tintable shader great for drawing backgrounds that don't need alpha.  Very efficient.
+Vertex Color - 
+    Does not have an inspector-tweakable color property.  All colors must be set by altering the colors[] or colors32[] array of a given mesh.  
+    Supports both texture alpha and vertex color alpha.
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Unity3d-texturepackerimporter maintained by <a href="https://github.com/haysclark">haysclark</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
