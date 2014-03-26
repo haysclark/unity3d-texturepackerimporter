@@ -31,7 +31,7 @@ public static class TexturePackerImport{
 
 		string path = rootPath + "/" + meta.image;
 
-		sprites = MaintainSpriteOrder(path, sprites);
+		sprites = MaintainSpriteOrder(path, sprites, meta.image);
 
 		TextureImporter texImp = AssetImporter.GetAtPath(path) as TextureImporter;
 		texImp.spritesheet = sprites.ToArray();
@@ -41,7 +41,7 @@ public static class TexturePackerImport{
 		AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate );
 	}
 
-	static List<SpriteMetaData> MaintainSpriteOrder(string path, List<SpriteMetaData> sprites)
+	static List<SpriteMetaData> MaintainSpriteOrder(string path, List<SpriteMetaData> sprites, string imageName)
 	{
 		sprites = new List<SpriteMetaData>(sprites);	// Work on a copy, method shouldn't have side-effects
 		List<SpriteMetaData> orderedSprites = new List<SpriteMetaData>();
@@ -62,10 +62,13 @@ public static class TexturePackerImport{
 				}
 				else
 				{
-					SpriteMetaData placeholder = new SpriteMetaData();
-					placeholder.name = existingSprite.name;
-					orderedSprites.Add(placeholder);
-					Debug.LogWarning(existingSprite.name + " removed from spritesheet. Adding blank placeholder.");
+					if (existingSprite.name != imageName)	// Make sure not to add the spritesheet image itself
+					{
+						SpriteMetaData placeholder = new SpriteMetaData();
+						placeholder.name = existingSprite.name;
+						orderedSprites.Add(placeholder);
+						Debug.LogWarning(existingSprite.name + " removed from spritesheet. Adding blank placeholder.");
+					}
 				}
 			}
 			else
