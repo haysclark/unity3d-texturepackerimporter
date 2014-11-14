@@ -30,12 +30,73 @@ public static class TexturePackerImport{
 		List<SpriteMetaData> sprites = TexturePacker.ProcessToSprites(txt.text);
 
 		string path = rootPath + "/" + meta.image;
+
+		sprites = MaintainSpriteOrder(path, sprites, meta.image);
+
 		TextureImporter texImp = AssetImporter.GetAtPath(path) as TextureImporter;
 		texImp.spritesheet = sprites.ToArray();
 		texImp.textureType = TextureImporterType.Sprite;
 		texImp.spriteImportMode = SpriteImportMode.Multiple;
 
 		AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate );
+	}
+
+	static List<SpriteMetaData> MaintainSpriteOrder(string path, List<SpriteMetaData> sprites, string imageName)
+	{
+		sprites = new List<SpriteMetaData>(sprites);	// Work on a copy, method shouldn't have side-effects
+		List<SpriteMetaData> orderedSprites = new List<SpriteMetaData>();
+
+		Object[] existing = AssetDatabase.LoadAllAssetsAtPath(path);
+
+		for (int i = 0; i < existing.Length; ++i)
+		{
+			Sprite existingSprite = existing[i] as Sprite;
+
+			if (null != existingSprite)
+			{
+				int pickedIndex = FindSpriteFromListByName(sprites, existingSprite.name);
+				if (-1 != pickedIndex)
+				{
+					orderedSprites.Add(sprites[pickedIndex]);
+					sprites.RemoveAt(pickedIndex);
+				}
+				else
+				{
+					if (existingSprite.name != imageName)	// Make sure not to add the spritesheet image itself
+					{
+						SpriteMetaData placeholder = new SpriteMetaData();
+						placeholder.name = existingSprite.name;
+						orderedSprites.Add(placeholder);
+						Debug.LogWarning(existingSprite.name + " removed from spritesheet. Adding blank placeholder.");
+					}
+				}
+			}
+			else
+			{
+				if (null == existing[i] as Texture2D)
+					Debug.LogWarning("Unexpected type " + existing[i]);
+			}
+		}
+
+		orderedSprites.AddRange(sprites);
+
+		return orderedSprites;
+	}
+
+	static int FindSpriteFromListByName(List<SpriteMetaData> spriteList, string name)
+	{
+		int index = -1;
+
+		for (int i = 0; i < spriteList.Count; ++i)
+		{
+			if (spriteList[i].name == name)
+			{
+				index = i;
+				break;
+			}
+		}
+
+		return index;
 	}
 
 	[MenuItem("Assets/TexturePacker/Process to Meshes")]
